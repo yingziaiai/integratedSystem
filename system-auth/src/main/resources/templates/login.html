@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+</head>
+<body>
+<h1>登陆</h1>
+<form method="post" action="/login">
+    <div>
+        用户名：<input type="text" name="username">
+    </div>
+    <div>
+        密　码：<input type="password" name="password">
+    </div>
+    <div style="display: flex;">
+        验证码：<input type="text" name="captcha" placeholder="captcha"/>
+        <img src="/captcha.jpg" alt="captcha" height="50px" width="150px" style="margin-left:20px;"/>
+    </div>
+
+    <div>
+        <button type="submit">立即登陆</button>
+    </div>
+</form>
+
+</body>
+</html>
