@@ -31,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/captcha.jpg").permitAll()
+                .antMatchers("/githubLogin").permitAll()
+                .antMatchers("/githubCallback").permitAll()
 //                .antMatchers("/hello").hasRole("USER")
 //                .antMatchers("/systemLogin").hasRole("USER")
 //                .antMatchers("/", "/home").permitAll()
