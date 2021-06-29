@@ -1,6 +1,7 @@
 package com.cloud.integratedSystem.auth.entities;
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tb_role")
 @Data
+@ToString(exclude="userSet")
 public class Role {
     @Id
     @GenericGenerator(name = "idGenerator", strategy = "uuid")

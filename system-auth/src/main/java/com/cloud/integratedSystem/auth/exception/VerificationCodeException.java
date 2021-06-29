@@ -1,9 +1,10 @@
 package com.cloud.integratedSystem.auth.exception;
 
-import javax.naming.AuthenticationException;
+
+import org.springframework.security.core.AuthenticationException;
 
 public class VerificationCodeException extends AuthenticationException {
-    public VerificationCodeException() {
+    public VerificationCodeException(String msg) {
         super("图形验证码校验失败");
     }
 }
