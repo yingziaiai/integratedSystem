@@ -1,6 +1,10 @@
 package com.cloud.integratedSystem.auth.filter;
 
 import com.cloud.integratedSystem.auth.exception.VerificationCodeException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.thymeleaf.util.StringUtils;
 
@@ -11,15 +15,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class VerificationCodeFilter extends OncePerRequestFilter {
+public class VerificationCodeFilter extends OncePerRequestFilter implements InitializingBean {
+
+    @Autowired
+    private AuthenticationFailureHandler failureHandler;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         if ("/login".equals(httpServletRequest.getRequestURI()) && "POST".equals(httpServletRequest.getMethod())) {
             try {
                 verificationCode(httpServletRequest);
                 filterChain.doFilter(httpServletRequest, httpServletResponse);
-            } catch (VerificationCodeException e) {
-                e.printStackTrace();
+            } catch (VerificationCodeException exception) {
+//                e.printStackTrace();
+                failureHandler.onAuthenticationFailure(httpServletRequest, httpServletResponse, exception);
+                return;
             }
 
         } else {
@@ -35,7 +45,15 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
             session.removeAttribute("captcha");
         }
         if (StringUtils.isEmpty(requestCode) || StringUtils.isEmpty(savedCode) || !requestCode.equals(savedCode)) {
-            throw new VerificationCodeException();
+            throw new VerificationCodeException("test code is error");
         }
+    }
+
+    public AuthenticationFailureHandler getFailureHandler() {
+        return failureHandler;
+    }
+
+    public void setFailureHandler(AuthenticationFailureHandler failureHandler) {
+        this.failureHandler = failureHandler;
     }
 }
